@@ -1,0 +1,4 @@
+cmd/rusudenkun/rusudenkun
+*.wav
+dev*
+config.yaml

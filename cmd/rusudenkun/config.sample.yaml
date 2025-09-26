@@ -1,0 +1,15 @@
+Name: "rusudenkun"
+URL: "http://localhost:8088/ari"
+WebsocketURL: "ws://localhost:8088/ari/events"
+MessageSound: "custom/rusuden"
+RecordingTimeout: 60s
+RecordingMaxSilence: 20s
+LogFile: /var/log/rusudenkun.log
+
+SakuraAIEngine:
+  URL: https://api.ai.sakura.ad.jp/v1/audio/transcriptions
+  Token: <TOKEN> 
+  Model: whisper-large-v3-turbo
+
+Slack:
+  WebHookURL: https://hooks.slack.com/services/...
