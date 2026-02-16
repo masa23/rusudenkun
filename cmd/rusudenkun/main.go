@@ -19,6 +19,7 @@ import (
 
 var log = slog.New(slog.NewJSONHandler(os.Stderr, nil))
 var conf *config.Config
+var aiClient *audiotrans.Client
 
 func main() {
 	var confPath string
@@ -29,6 +30,13 @@ func main() {
 	conf, err = config.Load(confPath)
 	if err != nil {
 		log.Error("failed to load config", "error", err)
+		os.Exit(1)
+	}
+
+	// AI Engineクライアントを初期化
+	aiClient, err = audiotrans.NewClient(*conf)
+	if err != nil {
+		log.Error("failed to create AI Engine client", "error", err)
 		os.Exit(1)
 	}
 
@@ -68,8 +76,8 @@ func main() {
 		case e := <-sub.Events():
 			v := e.(*ari.StasisStart)
 			log.Info("StasisStart", "channel", v.Channel.ID)
+			go app(ctx, cl.Channel().Get(v.Key(ari.ChannelKey, v.Channel.ID)), aiClient)
 
-			go app(ctx, cl.Channel().Get(v.Key(ari.ChannelKey, v.Channel.ID)))
 		case <-ctx.Done():
 			return
 		}
@@ -137,8 +145,7 @@ func recording(ctx context.Context, h *ari.ChannelHandle) (path string, err erro
 
 	return
 }
-
-func app(ctx context.Context, h *ari.ChannelHandle) {
+func app(ctx context.Context, h *ari.ChannelHandle, client *audiotrans.Client) {
 	defer h.Hangup()
 
 	ctx, cancel := context.WithCancel(ctx)
@@ -173,8 +180,7 @@ func app(ctx context.Context, h *ari.ChannelHandle) {
 
 	log.Info("recorded", "path", path)
 	path = filepath.Join("/var/spool/asterisk/recording/", path)
-
-	text, err := audiotrans.AudioTranscription(conf.SakuraAIEngine.URL, conf.SakuraAIEngine.Token, conf.SakuraAIEngine.Model, path)
+	text, err := aiClient.AudioTranscription(path)
 	if err != nil {
 		log.Error("failed to transcribe audio", "error", err)
 		return
