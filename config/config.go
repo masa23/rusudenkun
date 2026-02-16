@@ -11,9 +11,11 @@ import (
 
 // SakuraAIEngineの設定
 type configSakuraAIEngine struct {
-	URL   string `yaml:"URL"`
-	Token string `yaml:"Token"`
-	Model string `yaml:"Model"`
+	URL        string        `yaml:"URL"`
+	Token      string        `yaml:"Token"`
+	Model      string        `yaml:"Model"`
+	Timeout    time.Duration `yaml:"Timeout"`
+	MaxRetries int           `yaml:"MaxRetries"`
 }
 
 // Slackの設定

@@ -7,9 +7,11 @@ RecordingMaxSilence: 20s
 LogFile: /var/log/rusudenkun.log
 
 SakuraAIEngine:
-  URL: https://api.ai.sakura.ad.jp/v1/audio/transcriptions
-  Token: <TOKEN> 
+  URL: https://api.ai.sakura.ad.jp
+  Token: <TOKEN>
   Model: whisper-large-v3-turbo
+  Timeout: 30s
+  MaxRetries: 3
 
 Slack:
   WebHookURL: https://hooks.slack.com/services/...

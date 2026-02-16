@@ -1,9 +1,11 @@
 module github.com/masa23/rusudenkun
 
-go 1.24.2
+go 1.25
 
 require (
 	github.com/CyCoreSystems/ari/v6 v6.0.0-20250807101614-b97f61433a8f
+	github.com/masa23/aiengine-go v0.0.2
+	github.com/slack-go/slack v0.17.3
 	golang.org/x/exp v0.0.0-20250718183923-645b1fa84792
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -15,6 +17,5 @@ require (
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/rotisserie/eris v0.5.4 // indirect
-	github.com/slack-go/slack v0.17.3 // indirect
 	golang.org/x/net v0.42.0 // indirect
 )
